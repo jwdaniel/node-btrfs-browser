@@ -1,0 +1,76 @@
+doctype 5
+html
+  head
+    title= title
+    script(src='//code.jquery.com/jquery-1.9.1.js')
+    script(src='//code.jquery.com/ui/1.10.3/jquery-ui.js')
+    script(src='/javascripts/btrfs-front.js')
+    link(rel='stylesheet', href='/stylesheets/btrfs.css')
+  body
+    block content
+      h2
+        a(href="/btrfs") #{title}
+      div.buttons
+        button.btn(data-action="create") Create New Repository
+        button.btn(data-action="snapshot") Do Snapshot
+        button.btn(data-action="delete") Delete Snapshot
+      p
+      table.repoinfo
+        tr
+          td.fieldname Current Path :
+          td
+            a(href="#{path}") #{path}
+        tr
+          td.fieldname Repository :
+          td
+            a(href="#{btrfs.repo}") #{btrfs.repo}
+        tr
+          td.fieldname Version :
+          td
+            a(href="#{btrfs.repo}/#{btrfs.version}") #{btrfs.version}
+      p
+      div.filetable
+        table
+          tr.headline
+            th &nbsp;
+            th Filename
+            th Last Modified
+            th Size
+            th Action
+          - if (path != '/btrfs')
+            tr.fixline
+              td.filetype
+                img(src='/images/go-previous.png')
+              td.filename
+                a(href="/btrfs") [Back to Home]
+              td.lastmod
+              td.filesize
+              td.action
+            tr.fixline
+              td.filetype
+                img(src='/images/go-previous.png')
+              td.filename
+                a(href="#{parentpath}") [Parent Directory]
+              td.lastmod
+              td.filesize
+              td.action
+          each f in files
+            tr
+              - if (f.filetype)
+                td.filetype
+                  img(src='/images/folder.png')
+              - else
+                td.filetype
+                  img(src='/images/application-x-executable.png')
+              td.filename
+                a(href="#{path}/#{f.filename}") #{f.filename}
+              td.lastmod #{f.lastmod}
+              td.filesize #{f.filesize}
+              - if (btrfs.repo)
+                td.action
+                  button.btn(data-action="download") Download
+              - else
+                td.action
+      p
+      hr
+

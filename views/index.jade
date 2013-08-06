@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  div#services
+    ul
+      li
+        a(href='/btrfs/component') BTRFS - Components
+      li
+        a(href='/btrfs/package') BTRFS - Packages
+      li
+        a(href='/public') public
+      li
+        a(href='/test') test
+
