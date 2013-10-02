@@ -1,10 +1,9 @@
-    div#create-dialog
-        div#dialog-label Create a new reposiroy
-        div#dialog-label
-            Type:
-            <select id="repotype" name="repotype">
-                <option>Package</option>
-                <option>Component</option>
-            </select>
-        div#dialog-label
-            Path: <input type="text" id="reponame" name="reponame" size="36">
+      div.create-dialog
+        div.dialog-label Create a new reposiroy
+        div.dialog-label Type:
+          select#repotype
+            repotype = [ 'Package', 'Component' ]
+            option(selected=Package) Package
+            option Component
+        div.dialog-label Path:
+          input#reponame(type='text',size=36,name='reponame')

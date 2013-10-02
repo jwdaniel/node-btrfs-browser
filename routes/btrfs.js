@@ -85,7 +85,7 @@ getfilelist('/btrfs/component', function(data) {
 });
 */
 
-exports.list = function(req, res){
+exports.list = function(req, res) {
     fs.realpath(decodeURIComponent(req.url), function(err, pathname) {
         fs.stat(pathname, function(err, stat) {
             if (stat && stat.isFile()) {
@@ -98,7 +98,11 @@ exports.list = function(req, res){
                         } else {
                             var parentpath = path.dirname(pathname);
                         }
-                        res.render('btrfs', { title: 'ICE Release Management System', path: pathname, parentpath: parentpath, files: files, btrfs: prop });
+                        res.render('btrfs', { title: 'ICE Release Management System',
+                                              path: pathname,
+                                              parentpath: parentpath,
+                                              files: files,
+                                              btrfs: prop });
                     });
                 });
             }
@@ -106,7 +110,7 @@ exports.list = function(req, res){
     });
 };
 
-exports.download = function(req, res){
+exports.download = function(req, res) {
     var urlobj = url.parse(req.url, true);
     fs.realpath(decodeURIComponent(urlobj.query.pathname), function(err, pathname) {
         fs.stat(pathname, function(err, stat) {
@@ -115,7 +119,7 @@ exports.download = function(req, res){
             } else {
                 var parentdir = path.dirname(pathname);
                 var listdir = path.basename(pathname);
-                var archivefile = __dirname + '/public/download/' + listdir + '.zip';
+                var archivefile = __dirname + '/../public/download/' + listdir + '.zip';
                 var proc = spawn("/usr/bin/7z", ["a", "-r", "-tzip", archivefile, listdir], {cwd: parentdir});
                 proc.stdout.on('data', function(data) {
                     console.log('stdout: ' + data);
@@ -124,6 +128,7 @@ exports.download = function(req, res){
                     console.log('stderr: ' + data);
                 });
                 proc.on('close', function(code) {
+                    res.contentType('zip');
                     res.download(archivefile);
                 });
                 // files.each(function(file) {
@@ -133,3 +138,30 @@ exports.download = function(req, res){
         });
     });
 };
+
+exports.command = function(req, res) {
+    var urlobj = url.parse(req.url, true);
+    var command = urlobj.query.command;
+    // console.log(urlobj.query.command);
+    if (command == 'createrepo') {
+        // var args = {'command': 'createrepo', 'username': $('#username').val(), 'path': $('#btrfspath').text(), 'reponame': $('#reponame').val()};
+        console.log(urlobj);
+    } else if (command == 'snapshot') {
+        // var args = {'command': 'snapshot', 'repo': $('#btrfsrepo').text(), 'snapversion': $('#snapversion').val()};
+        console.log(urlobj);
+    } else if (command == 'readfile') {
+        // console.log(urlobj);
+        var pname = decodeURIComponent(urlobj.query.pathname);
+        var fname = decodeURIComponent(urlobj.query.filename);
+        fs.realpath(pname + '/' + fname, function(err, pathname) {
+            if (fs.existsSync(pathname)) {
+            fs.stat(pathname, function(err, stat) {
+                if (stat && stat.isFile()) {
+                    res.sendfile(pathname);
+                }
+            });
+            }
+        });
+    }
+};
+

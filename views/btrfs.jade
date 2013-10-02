@@ -2,8 +2,9 @@ doctype 5
 html
   head
     title= title
-    script(src='//code.jquery.com/jquery-1.9.1.js')
-    script(src='//code.jquery.com/ui/1.10.3/jquery-ui.js')
+    script(src='//code.jquery.com/jquery-1.10.2.min.js')
+    script(src='//code.jquery.com/ui/1.10.3/jquery-ui.min.js')
+    link(rel='stylesheet', href='//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.min.css')
     script(src='/javascripts/btrfs-front.js')
     link(rel='stylesheet', href='/stylesheets/btrfs.css')
   body
@@ -13,21 +14,20 @@ html
       div.buttons
         button.btn(data-action="create") Create New Repository
         button.btn(data-action="snapshot") Do Snapshot
-        button.btn(data-action="delete") Delete Snapshot
       p
       table.repoinfo
         tr
           td.fieldname Current Path :
           td
-            a(href="#{path}") #{path}
+            a#btrfspath(href="#{path}") #{path}
         tr
           td.fieldname Repository :
           td
-            a(href="#{btrfs.repo}") #{btrfs.repo}
+            a#btrfsrepo(href="#{btrfs.repo}") #{btrfs.repo}
         tr
           td.fieldname Version :
           td
-            a(href="#{btrfs.repo}/#{btrfs.version}") #{btrfs.version}
+            a#btrfsversion(href="#{btrfs.repo}/#{btrfs.version}") #{btrfs.version}
       p
       div.filetable
         table
@@ -73,4 +73,15 @@ html
                 td.action
       p
       hr
+      div#changes
+      div#create-dialog
+        div.dialog-label User : 
+          input#username(type='text',size=12,name='username')
+        div.dialog-label Repository Name : 
+          input#reponame(type='text',size=36,name='reponame')
+      div#snapshot-dialog
+        div.dialog-label User : 
+          input#username(type='text',size=12,name='username')
+        div.dialog-label Snapshot Version : 
+          input#snapversion(type='text',size=16,name='snapversion')
 
